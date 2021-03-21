@@ -11,6 +11,8 @@ namespace Bakery.Services.Application.Models.Customer
 
             RuleFor(x => x.Longitude).NotNull()
                 .GreaterThanOrEqualTo(-180).LessThanOrEqualTo(180);
+
+            RuleFor(x => x.Distance).NotNull();
         }
     }
 }

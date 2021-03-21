@@ -13,7 +13,7 @@ namespace Bakery.Services.Application.Models.Customer
         public DateTime? DateStart { get; set; }
         public DateTime? DateEnd { get; set; }
         
-        public IEnumerable<CustomerAddressDto> Addresses { get; set; }
+        public IEnumerable<AddressDto> Addresses { get; set; }
         public IEnumerable<CustomerDiscountDto> Discounts { get; set; }
     }
 }

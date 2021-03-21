@@ -7,6 +7,7 @@ using AutoMapper;
 using Bakery.Core;
 using Bakery.Services.Application;
 using Bakery.Services.Application.Models.Customer;
+using Bakery.Services.Domain.Address;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -39,6 +40,9 @@ namespace Bakery
                 .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()))
                 .UseMySQL(connectionString, b => b.MigrationsAssembly("Bakery")));
 
+            services.AddTransient<IAddressRepository, AddressRepository>(provider =>
+                new AddressRepository(connectionString));
+            
             services.AddAutoMapper(typeof(Mappers));
             
             services.RegisterUserServices();

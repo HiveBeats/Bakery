@@ -1,6 +1,7 @@
 using AutoMapper;
 using Bakery.Core.Entities;
 using Bakery.Services.Application.Models.Customer;
+using Bakery.Services.Application.Models.CustomerAddress;
 
 namespace Bakery
 {
@@ -10,6 +11,8 @@ namespace Bakery
         {
             CreateMap<Customer, CustomerDto>().ReverseMap();
             CreateMap<CustomerDto, CustomerDetailDto>();
+
+            CreateMap<GetNearestCustomers, Location>();
         }
     }
 }
