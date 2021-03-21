@@ -8,5 +8,6 @@ namespace Bakery.Services.Domain.Address
     public interface IAddressService
     {
         Task<Result<IEnumerable<NearestAddressDto>>> GetNearest(Location location, float distance);
+        Task<Result<AddressDto>> Create(Core.Entities.Customer customer, CreateCustomerAddress request);
     }
 }

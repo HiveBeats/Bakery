@@ -11,7 +11,9 @@ namespace Bakery
         {
             CreateMap<Customer, CustomerDto>().ReverseMap();
             CreateMap<CustomerDto, CustomerDetailDto>();
-
+            CreateMap<CustomerAddress, CustomerAddressDto>().ReverseMap();
+            CreateMap<Customer, AddressableCustomerDto>();
+            
             CreateMap<GetNearestCustomers, Location>();
         }
     }
