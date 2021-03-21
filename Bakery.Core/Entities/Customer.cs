@@ -5,7 +5,16 @@ namespace Bakery.Core.Entities
 {
     public partial class Customer
     {
-        public Customer()
+        public Customer(string name, CustomerAddress address)
+        {
+            CustomerAddress = new HashSet<CustomerAddress>();
+            CustomerDiscount = new HashSet<CustomerDiscount>();
+            
+            CustomerName = name;
+            DateStart = DateTime.UtcNow;
+        }
+        
+        protected Customer()
         {
             CustomerAddress = new HashSet<CustomerAddress>();
             CustomerDiscount = new HashSet<CustomerDiscount>();
@@ -18,5 +27,10 @@ namespace Bakery.Core.Entities
         public DateTime? DateEnd { get; set; }
         public virtual ICollection<CustomerAddress> CustomerAddress { get; set; }
         public virtual ICollection<CustomerDiscount> CustomerDiscount { get; set; }
+
+        public void Close()
+        {
+            DateEnd = DateTime.UtcNow;
+        }
     }
 }

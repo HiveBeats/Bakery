@@ -18,5 +18,10 @@ namespace Bakery.Core.Entities
         public DateTime? DateEnd { get; set; }
         public virtual Customer Customer { get; set; }
         public virtual ICollection<DiscountTime> DiscountTime { get; set; }
+        
+        public void Close()
+        {
+            DateEnd = DateTime.UtcNow;
+        }
     }
 }
