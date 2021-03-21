@@ -8,5 +8,7 @@ namespace Bakery.Services.Domain.Customer
     {
         Task<Result<CustomerDto>> CreateCustomer(CreateCustomer request);
         Task<Result<CustomerDto>> UpdateCustomer(UpdateCustomer request);
+        Task<Result<CustomerDto>> CloseCustomer(CloseCustomer request);
+        Task<Result<CustomerDto>> GetCustomer(GetCustomerDetail request);
     }
 }

@@ -9,6 +9,7 @@ namespace Bakery
         public Mappers()
         {
             CreateMap<Customer, CustomerDto>().ReverseMap();
+            CreateMap<CustomerDto, CustomerDetailDto>();
         }
     }
 }
