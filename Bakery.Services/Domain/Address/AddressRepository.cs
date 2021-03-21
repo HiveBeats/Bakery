@@ -28,7 +28,7 @@ namespace Bakery.Services.Domain.Address
                                     ca.Latitude,
                                     ca.Longitude,
                                     ca.DateStart,
-                                    ca.DateEnd 
+                                    ca.DateEnd, 
                                     (
                                     6371 *
                                     acos(cos(radians(@Latitude)) * 
