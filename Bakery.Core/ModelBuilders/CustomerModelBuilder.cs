@@ -16,6 +16,8 @@ namespace Bakery.Core.ModelBuilders
             entity.Property(e => e.CustomerName)
                 .IsRequired()
                 .HasMaxLength(255);
+            
+            entity.HasIndex(x => x.DateEnd);
         }
     }
 }

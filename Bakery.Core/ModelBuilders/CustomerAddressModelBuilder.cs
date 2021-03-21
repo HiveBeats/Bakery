@@ -32,7 +32,8 @@ namespace Bakery.Core.ModelBuilders
                 .HasForeignKey(d => d.CustomerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CUSTOMER_ADDRESS_CUSTOMER");
-            
+
+            entity.HasIndex(x => x.DateEnd);
         }
     }
 }

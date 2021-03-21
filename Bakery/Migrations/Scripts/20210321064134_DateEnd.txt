@@ -1,0 +1,60 @@
+-- disable UNIQ, PK, ...
+ALTER TABLE DiscountTime DISABLE KEYS;
+-- diable FK
+SET FOREIGN_KEY_CHECKS=0;
+
+-- disable UNIQ, PK, ...
+ALTER TABLE CustomerDiscount DISABLE KEYS;
+-- diable FK
+SET FOREIGN_KEY_CHECKS=0;
+
+-- disable UNIQ, PK, ...
+ALTER TABLE CustomerAddress DISABLE KEYS;
+-- diable FK
+SET FOREIGN_KEY_CHECKS=0;
+
+-- disable UNIQ, PK, ...
+ALTER TABLE Customer DISABLE KEYS;
+-- diable FK
+SET FOREIGN_KEY_CHECKS=0;
+
+
+
+ALTER TABLE `DiscountTime` MODIFY `TimeId` int(11) NOT NULL;
+
+ALTER TABLE `CustomerDiscount` MODIFY `DiscountId` int(11) NOT NULL;
+
+ALTER TABLE `CustomerDiscount` ADD `DateEnd` datetime NULL;
+
+ALTER TABLE `CustomerDiscount` ADD `DateStart` datetime NULL;
+
+ALTER TABLE `CustomerAddress` MODIFY `AddressId` int(11) NOT NULL;
+
+ALTER TABLE `CustomerAddress` ADD `DateEnd` datetime NULL;
+
+ALTER TABLE `CustomerAddress` ADD `DateStart` datetime NULL;
+
+ALTER TABLE `Customer` MODIFY `CustomerId` int(11) NOT NULL;
+
+ALTER TABLE `Customer` ADD `DateEnd` datetime NULL;
+
+ALTER TABLE `Customer` ADD `DateStart` datetime NULL;
+
+CREATE INDEX `IX_CustomerDiscount_DateEnd` ON `CustomerDiscount` (`DateEnd`);
+
+CREATE INDEX `IX_CustomerAddress_DateEnd` ON `CustomerAddress` (`DateEnd`);
+
+CREATE INDEX `IX_Customer_DateEnd` ON `Customer` (`DateEnd`);
+
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20210321064134_DateEnd', '3.1.9');
+
+-- diable FK
+SET FOREIGN_KEY_CHECKS=1;
+ALTER TABLE DiscountTime ENABLE KEYS;
+SET FOREIGN_KEY_CHECKS=1;
+ALTER TABLE CustomerDiscount ENABLE KEYS;
+SET FOREIGN_KEY_CHECKS=1;
+ALTER TABLE CustomerAddress ENABLE KEYS;
+SET FOREIGN_KEY_CHECKS=1;
+ALTER TABLE Customer ENABLE KEYS;

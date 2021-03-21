@@ -1,0 +1,58 @@
+CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (
+    `MigrationId` varchar(150) NOT NULL,
+    `ProductVersion` varchar(32) NOT NULL,
+    PRIMARY KEY (`MigrationId`)
+);
+
+CREATE TABLE `Customer` (
+    `CustomerId` int(11) NOT NULL,
+    `CustomerName` varchar(255) NOT NULL,
+    `CustomerDescription` text NULL,
+    PRIMARY KEY (`CustomerId`)
+);
+
+CREATE TABLE `CustomerAddress` (
+    `CustomerId` int(11) NOT NULL,
+    `AddressId` int(11) NOT NULL,
+    `AddressName` varchar(255) NULL,
+    `Latitude` float(10,6) NOT NULL,
+    `Longitude` float(10,6) NOT NULL,
+    PRIMARY KEY (`CustomerId`, `AddressId`),
+    CONSTRAINT `FK_CUSTOMER_ADDRESS_CUSTOMER` FOREIGN KEY (`CustomerId`) REFERENCES `Customer` (`CustomerId`) ON DELETE RESTRICT
+);
+
+CREATE TABLE `CustomerDiscount` (
+    `CustomerId` int(11) NOT NULL,
+    `DiscountId` int(11) NOT NULL,
+    `Name` varchar(255) NOT NULL,
+    `Description` text NULL,
+    PRIMARY KEY (`DiscountId`, `CustomerId`),
+    CONSTRAINT `AK_CustomerDiscount_DiscountId` UNIQUE (`DiscountId`),
+    CONSTRAINT `FK_DISCOUNT_CUSTOMER` FOREIGN KEY (`CustomerId`) REFERENCES `Customer` (`CustomerId`) ON DELETE RESTRICT
+);
+
+CREATE TABLE `DiscountTime` (
+    `DiscountId` int(11) NOT NULL,
+    `TimeId` int(11) NOT NULL,
+    `DayWeek` int(11) NOT NULL,
+    `StartTime` decimal(5,2) NULL,
+    `EndTime` decimal(5,2) NULL,
+    PRIMARY KEY (`TimeId`, `DiscountId`),
+    CONSTRAINT `FK_DISCOUNT_TIMES_DISCOUNT` FOREIGN KEY (`DiscountId`) REFERENCES `CustomerDiscount` (`DiscountId`) ON DELETE RESTRICT
+);
+
+CREATE INDEX `IDX_CUSTOMER_NAME` ON `Customer` (`CustomerName`);
+
+CREATE UNIQUE INDEX `AddressId_UNIQUE` ON `CustomerAddress` (`AddressId`);
+
+CREATE INDEX `FK_DISCOUNT_CUSTOMER_idx` ON `CustomerDiscount` (`CustomerId`);
+
+CREATE UNIQUE INDEX `DiscountId_UNIQUE` ON `CustomerDiscount` (`DiscountId`);
+
+CREATE INDEX `FK_DISCOUNT_TIMES_DISCOUNT` ON `DiscountTime` (`DiscountId`);
+
+CREATE UNIQUE INDEX `TimeId_UNIQUE` ON `DiscountTime` (`TimeId`);
+
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20210321063139_InitialCreate', '3.1.9');
+

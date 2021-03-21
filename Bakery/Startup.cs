@@ -37,13 +37,15 @@ namespace Bakery
             var connectionString = Configuration.GetConnectionString("BakeryDb");
             services.AddDbContext<AppDbContext>(options => options
                 .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()))
-                .UseMySQL(connectionString));
+                .UseMySQL(connectionString, b => b.MigrationsAssembly("Bakery")));
 
             services.AddAutoMapper(typeof(Mappers));
             
+            services.RegisterUserServices();
+            
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(Bootstrapper).Assembly);
-            
+
             services.AddMvc()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateCustomerValidator>());
             
@@ -52,8 +54,6 @@ namespace Bakery
                 options.AddPolicy("AllowAll",
                     builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
             });
-            
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
