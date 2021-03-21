@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Bakery.Services.Application.Commands.CreateCustomer;
+using Bakery.Services.Application.Commands.UpdateCustomer;
 using Bakery.Services.Application.Models.Customer;
 using Bakery.Services.Domain.Customer;
 using MediatR;
@@ -30,6 +31,22 @@ namespace Bakery.Controllers
                 Request = request
             });
 
+            if (!result.IsSuccessful)
+                return BadRequest(result.Exception);
+
+            return Ok(result.Value);
+        }
+
+        public async Task<IActionResult> UpdateCustomer(UpdateCustomer request)
+        {
+            if (request == null || !ModelState.IsValid)
+                return BadRequest("Incorrect input");
+            
+            var result =  await _mediator.Send(new UpdateCustomerCommand
+            {
+                Request = request
+            });
+            
             if (!result.IsSuccessful)
                 return BadRequest(result.Exception);
 

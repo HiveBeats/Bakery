@@ -10,5 +10,10 @@ namespace Bakery.Services.Domain.Customer
         {
             throw new System.NotImplementedException();
         }
+
+        public Task<Result<CustomerDto>> UpdateCustomer(UpdateCustomer request)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

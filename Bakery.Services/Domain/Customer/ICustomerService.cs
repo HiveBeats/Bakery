@@ -7,5 +7,6 @@ namespace Bakery.Services.Domain.Customer
     public interface ICustomerService
     {
         Task<Result<CustomerDto>> CreateCustomer(CreateCustomer request);
+        Task<Result<CustomerDto>> UpdateCustomer(UpdateCustomer request);
     }
 }

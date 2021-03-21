@@ -6,22 +6,24 @@ using Bakery.Services.Application.Models.Customer;
 using Bakery.Services.Domain.Customer;
 using MediatR;
 
-namespace Bakery.Services.Application.Commands.CreateCustomer
+namespace Bakery.Services.Application.Commands.UpdateCustomer
 {
-    public class CreateCustomerHandler : IRequestHandler<CreateCustomerCommand, Result<CustomerDto>>
+    public class UpdateCustomerHanlder: IRequestHandler<UpdateCustomerCommand, Result<CustomerDto>>
     {
         private readonly ICustomerService _customerService;
         private readonly AppDbContext _ctx;
-        public CreateCustomerHandler(ICustomerService service, AppDbContext ctx)
+
+        public UpdateCustomerHanlder(ICustomerService service, AppDbContext ctx)
         {
             _customerService = service;
             _ctx = ctx;
         }
-        public async Task<Result<CustomerDto>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
+        
+        public async Task<Result<CustomerDto>> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
         {
             await using var transaction = await _ctx.Database.BeginTransactionAsync(cancellationToken);
-            var result = await _customerService.CreateCustomer(request.Request);
-                
+            var result = await _customerService.UpdateCustomer(request.Request);
+            
             if (!result.IsSuccessful)
                 transaction.RollbackAsync(cancellationToken);
 
