@@ -25,7 +25,7 @@ namespace Bakery.Controllers
         }
 
         [HttpGet]
-        [Route("Get/{id:string}")]
+        [Route("Get/{id:long}")]
         public async Task<IActionResult> Get(long id)
         {
             if (id == null)
@@ -98,7 +98,7 @@ namespace Bakery.Controllers
         }
 
         [HttpPost]
-        [Route("Close/{id:string}")]
+        [Route("Close/{id:long}")]
         public async Task<IActionResult> CloseCustomer(long id)
         {
             var request = new CloseCustomer() { CustomerId = id };
