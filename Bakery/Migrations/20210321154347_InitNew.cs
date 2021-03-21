@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace Bakery.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitNew : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,9 +12,12 @@ namespace Bakery.Migrations
                 name: "Customer",
                 columns: table => new
                 {
-                    CustomerId = table.Column<int>(type: "int(11)", nullable: false),
+                    CustomerId = table.Column<long>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     CustomerName = table.Column<string>(maxLength: 255, nullable: false),
-                    CustomerDescription = table.Column<string>(nullable: true)
+                    CustomerDescription = table.Column<string>(nullable: true),
+                    DateStart = table.Column<DateTime>(nullable: true),
+                    DateEnd = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -23,15 +28,18 @@ namespace Bakery.Migrations
                 name: "CustomerAddress",
                 columns: table => new
                 {
-                    CustomerId = table.Column<int>(type: "int(11)", nullable: false),
-                    AddressId = table.Column<int>(type: "int(11)", nullable: false),
+                    AddressId = table.Column<long>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CustomerId = table.Column<long>(nullable: false),
                     AddressName = table.Column<string>(maxLength: 255, nullable: true),
                     Latitude = table.Column<float>(type: "float(10,6)", nullable: false),
-                    Longitude = table.Column<float>(type: "float(10,6)", nullable: false)
+                    Longitude = table.Column<float>(type: "float(10,6)", nullable: false),
+                    DateStart = table.Column<DateTime>(nullable: true),
+                    DateEnd = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PRIMARY", x => new { x.CustomerId, x.AddressId });
+                    table.PrimaryKey("PRIMARY", x => x.AddressId);
                     table.ForeignKey(
                         name: "FK_CUSTOMER_ADDRESS_CUSTOMER",
                         column: x => x.CustomerId,
@@ -44,15 +52,17 @@ namespace Bakery.Migrations
                 name: "CustomerDiscount",
                 columns: table => new
                 {
-                    CustomerId = table.Column<int>(type: "int(11)", nullable: false),
-                    DiscountId = table.Column<int>(type: "int(11)", nullable: false),
+                    DiscountId = table.Column<long>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CustomerId = table.Column<long>(nullable: false),
                     Name = table.Column<string>(maxLength: 255, nullable: false),
-                    Description = table.Column<string>(nullable: true)
+                    Description = table.Column<string>(nullable: true),
+                    DateStart = table.Column<DateTime>(nullable: true),
+                    DateEnd = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PRIMARY", x => new { x.DiscountId, x.CustomerId });
-                    table.UniqueConstraint("AK_CustomerDiscount_DiscountId", x => x.DiscountId);
+                    table.PrimaryKey("PRIMARY", x => x.DiscountId);
                     table.ForeignKey(
                         name: "FK_DISCOUNT_CUSTOMER",
                         column: x => x.CustomerId,
@@ -65,15 +75,16 @@ namespace Bakery.Migrations
                 name: "DiscountTime",
                 columns: table => new
                 {
-                    DiscountId = table.Column<int>(type: "int(11)", nullable: false),
-                    TimeId = table.Column<int>(type: "int(11)", nullable: false),
+                    TimeId = table.Column<long>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    DiscountId = table.Column<long>(nullable: false),
                     DayWeek = table.Column<int>(type: "int(11)", nullable: false),
                     StartTime = table.Column<decimal>(type: "decimal(5,2)", nullable: true),
                     EndTime = table.Column<decimal>(type: "decimal(5,2)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PRIMARY", x => new { x.TimeId, x.DiscountId });
+                    table.PrimaryKey("PRIMARY", x => x.TimeId);
                     table.ForeignKey(
                         name: "FK_DISCOUNT_TIMES_DISCOUNT",
                         column: x => x.DiscountId,
@@ -88,20 +99,35 @@ namespace Bakery.Migrations
                 column: "CustomerName");
 
             migrationBuilder.CreateIndex(
-                name: "AddressId_UNIQUE",
+                name: "IX_Customer_DateEnd",
+                table: "Customer",
+                column: "DateEnd");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerAddress_DateEnd",
                 table: "CustomerAddress",
-                column: "AddressId",
+                column: "DateEnd");
+
+            migrationBuilder.CreateIndex(
+                name: "Customer_AddressId_UNIQUE",
+                table: "CustomerAddress",
+                columns: new[] { "CustomerId", "AddressId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "FK_DISCOUNT_CUSTOMER_idx",
+                name: "IX_CustomerDiscount_CustomerId",
                 table: "CustomerDiscount",
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "DiscountId_UNIQUE",
+                name: "IX_CustomerDiscount_DateEnd",
                 table: "CustomerDiscount",
-                column: "DiscountId",
+                column: "DateEnd");
+
+            migrationBuilder.CreateIndex(
+                name: "CustomerId_DiscountId_UNIQUE",
+                table: "CustomerDiscount",
+                columns: new[] { "DiscountId", "CustomerId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -110,9 +136,9 @@ namespace Bakery.Migrations
                 column: "DiscountId");
 
             migrationBuilder.CreateIndex(
-                name: "TimeId_UNIQUE",
+                name: "DiscountId_TimeId_UNIQUE",
                 table: "DiscountTime",
-                column: "TimeId",
+                columns: new[] { "TimeId", "DiscountId" },
                 unique: true);
         }
 

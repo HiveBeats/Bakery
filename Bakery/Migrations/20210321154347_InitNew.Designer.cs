@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bakery.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210321064134_DateEnd")]
-    partial class DateEnd
+    [Migration("20210321154347_InitNew")]
+    partial class InitNew
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,9 +21,9 @@ namespace Bakery.Migrations
 
             modelBuilder.Entity("Bakery.Core.Entities.Customer", b =>
                 {
-                    b.Property<int>("CustomerId")
+                    b.Property<long>("CustomerId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int(11)");
+                        .HasColumnType("bigint");
 
                     b.Property<string>("CustomerDescription")
                         .HasColumnType("text");
@@ -51,16 +51,16 @@ namespace Bakery.Migrations
 
             modelBuilder.Entity("Bakery.Core.Entities.CustomerAddress", b =>
                 {
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int(11)");
-
-                    b.Property<int>("AddressId")
+                    b.Property<long>("AddressId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int(11)");
+                        .HasColumnType("bigint");
 
                     b.Property<string>("AddressName")
                         .HasColumnType("varchar(255)")
                         .HasMaxLength(255);
+
+                    b.Property<long>("CustomerId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DateEnd")
                         .HasColumnType("datetime");
@@ -74,26 +74,26 @@ namespace Bakery.Migrations
                     b.Property<float>("Longitude")
                         .HasColumnType("float(10,6)");
 
-                    b.HasKey("CustomerId", "AddressId")
+                    b.HasKey("AddressId")
                         .HasName("PRIMARY");
 
-                    b.HasIndex("AddressId")
-                        .IsUnique()
-                        .HasName("AddressId_UNIQUE");
-
                     b.HasIndex("DateEnd");
+
+                    b.HasIndex("CustomerId", "AddressId")
+                        .IsUnique()
+                        .HasName("Customer_AddressId_UNIQUE");
 
                     b.ToTable("CustomerAddress");
                 });
 
             modelBuilder.Entity("Bakery.Core.Entities.CustomerDiscount", b =>
                 {
-                    b.Property<int>("DiscountId")
+                    b.Property<long>("DiscountId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int(11)");
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int(11)");
+                    b.Property<long>("CustomerId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DateEnd")
                         .HasColumnType("datetime");
@@ -109,32 +109,31 @@ namespace Bakery.Migrations
                         .HasColumnType("varchar(255)")
                         .HasMaxLength(255);
 
-                    b.HasKey("DiscountId", "CustomerId")
+                    b.HasKey("DiscountId")
                         .HasName("PRIMARY");
 
-                    b.HasIndex("CustomerId")
-                        .HasName("FK_DISCOUNT_CUSTOMER_idx");
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("DateEnd");
 
-                    b.HasIndex("DiscountId")
+                    b.HasIndex("DiscountId", "CustomerId")
                         .IsUnique()
-                        .HasName("DiscountId_UNIQUE");
+                        .HasName("CustomerId_DiscountId_UNIQUE");
 
                     b.ToTable("CustomerDiscount");
                 });
 
             modelBuilder.Entity("Bakery.Core.Entities.DiscountTime", b =>
                 {
-                    b.Property<int>("TimeId")
+                    b.Property<long>("TimeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int(11)");
-
-                    b.Property<int>("DiscountId")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("bigint");
 
                     b.Property<int>("DayWeek")
                         .HasColumnType("int(11)");
+
+                    b.Property<long>("DiscountId")
+                        .HasColumnType("bigint");
 
                     b.Property<decimal?>("EndTime")
                         .HasColumnType("decimal(5,2)");
@@ -142,15 +141,15 @@ namespace Bakery.Migrations
                     b.Property<decimal?>("StartTime")
                         .HasColumnType("decimal(5,2)");
 
-                    b.HasKey("TimeId", "DiscountId")
+                    b.HasKey("TimeId")
                         .HasName("PRIMARY");
 
                     b.HasIndex("DiscountId")
                         .HasName("FK_DISCOUNT_TIMES_DISCOUNT");
 
-                    b.HasIndex("TimeId")
+                    b.HasIndex("TimeId", "DiscountId")
                         .IsUnique()
-                        .HasName("TimeId_UNIQUE");
+                        .HasName("DiscountId_TimeId_UNIQUE");
 
                     b.ToTable("DiscountTime");
                 });
@@ -179,7 +178,6 @@ namespace Bakery.Migrations
                         .WithMany("DiscountTime")
                         .HasForeignKey("DiscountId")
                         .HasConstraintName("FK_DISCOUNT_TIMES_DISCOUNT")
-                        .HasPrincipalKey("DiscountId")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

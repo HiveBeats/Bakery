@@ -23,15 +23,22 @@ namespace Bakery.Services.Domain.Address
         {
             if (location == null)
                 return Result<IEnumerable<NearestAddressDto>>.Fail("Incorrect Input");
-
-            var result = await _repository.GetNearest(new NearestLocation()
+            try
             {
-                Latitude = location.Latitude,
-                Longitude = location.Longitude,
-                Distance = distance
-            });
+                var result = await _repository.GetNearest(new NearestLocation()
+                {
+                    Latitude = location.Latitude,
+                    Longitude = location.Longitude,
+                    Distance = distance
+                });
+                
+                return Result<IEnumerable<NearestAddressDto>>.Create(result);
+            }
+            catch(Exception ex)
+            {
+                return Result<IEnumerable<NearestAddressDto>>.Fail(ex.Message);
+            }
             
-            return Result<IEnumerable<NearestAddressDto>>.Create(result);
         }
     }
 }

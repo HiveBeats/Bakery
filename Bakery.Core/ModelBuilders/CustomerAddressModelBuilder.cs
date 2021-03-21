@@ -8,17 +8,15 @@ namespace Bakery.Core.ModelBuilders
     {
         public CustomerAddressModelBuilder(EntityTypeBuilder<CustomerAddress> entity) : base(entity)
         {
-            entity.HasKey(e => new { e.CustomerId, e.AddressId })
+            entity.HasIndex(e => new { e.CustomerId, e.AddressId })
+                .HasName("Customer_AddressId_UNIQUE").IsUnique();
+
+            entity.HasKey(e => e.AddressId)
                 .HasName("PRIMARY");
 
-            entity.HasIndex(e => e.AddressId)
-                .HasName("AddressId_UNIQUE")
-                .IsUnique();
-
-            entity.Property(e => e.CustomerId).HasColumnType("int(11)");
+            entity.Property(e => e.CustomerId);
 
             entity.Property(e => e.AddressId)
-                .HasColumnType("int(11)")
                 .ValueGeneratedOnAdd();
 
             entity.Property(e => e.AddressName).HasMaxLength(255);

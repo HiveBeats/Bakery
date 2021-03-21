@@ -8,21 +8,19 @@ namespace Bakery.Core.ModelBuilders
     {
         public CustomerDiscountModelBuilder(EntityTypeBuilder<CustomerDiscount> entity) : base(entity)
         {
-            entity.HasKey(e => new { e.DiscountId, e.CustomerId })
-                .HasName("PRIMARY");
+            entity.HasIndex(e => new { e.DiscountId, e.CustomerId })
+                .HasName("CustomerId_DiscountId_UNIQUE").IsUnique();
 
-            entity.HasIndex(e => e.CustomerId)
+            entity.HasKey(e => e.CustomerId)
                 .HasName("FK_DISCOUNT_CUSTOMER_idx");
 
-            entity.HasIndex(e => e.DiscountId)
-                .HasName("DiscountId_UNIQUE")
-                .IsUnique();
+            entity.HasKey(e => e.DiscountId)
+                .HasName("PRIMARY");
 
             entity.Property(e => e.DiscountId)
-                .HasColumnType("int(11)")
                 .ValueGeneratedOnAdd();
 
-            entity.Property(e => e.CustomerId).HasColumnType("int(11)");
+            entity.Property(e => e.CustomerId);
 
             entity.Property(e => e.Name)
                 .IsRequired()

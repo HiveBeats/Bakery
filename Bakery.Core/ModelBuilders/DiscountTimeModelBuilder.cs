@@ -8,21 +8,19 @@ namespace Bakery.Core.ModelBuilders
     {
         public DiscountTimeModelBuilder(EntityTypeBuilder<DiscountTime> entity) : base(entity)
         {
-            entity.HasKey(e => new { e.TimeId, e.DiscountId })
-                .HasName("PRIMARY");
+            entity.HasIndex(e => new { e.TimeId, e.DiscountId })
+                .HasName("DiscountId_TimeId_UNIQUE").IsUnique();
 
             entity.HasIndex(e => e.DiscountId)
                 .HasName("FK_DISCOUNT_TIMES_DISCOUNT");
 
-            entity.HasIndex(e => e.TimeId)
-                .HasName("TimeId_UNIQUE")
-                .IsUnique();
+            entity.HasKey(e => e.TimeId)
+                .HasName("PRIMARY");
 
             entity.Property(e => e.TimeId)
-                .HasColumnType("int(11)")
                 .ValueGeneratedOnAdd();
 
-            entity.Property(e => e.DiscountId).HasColumnType("int(11)");
+            entity.Property(e => e.DiscountId);
 
             entity.Property(e => e.DayWeek).HasColumnType("int(11)");
 

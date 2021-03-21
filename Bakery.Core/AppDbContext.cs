@@ -8,11 +8,14 @@ namespace Bakery.Core
     {
         public AppDbContext()
         {
-            
+           //Database.EnsureDeleted();
+            //Database.EnsureCreated();
         }
 
         public AppDbContext(DbContextOptions options) : base(options)
         {
+            //Database.EnsureDeleted();
+            //Database.EnsureCreated();
         }
         
         public virtual DbSet<Customer> Customer { get; set; }

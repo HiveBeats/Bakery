@@ -5,54 +5,54 @@ CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (
 );
 
 CREATE TABLE `Customer` (
-    `CustomerId` int(11) NOT NULL,
+    `CustomerId` bigint NOT NULL AUTO_INCREMENT,
     `CustomerName` varchar(255) NOT NULL,
     `CustomerDescription` text NULL,
+    `DateStart` datetime NULL,
+    `DateEnd` datetime NULL,
     PRIMARY KEY (`CustomerId`)
 );
 
 CREATE TABLE `CustomerAddress` (
-    `CustomerId` int(11) NOT NULL,
-    `AddressId` int(11) NOT NULL,
+    `AddressId` bigint NOT NULL AUTO_INCREMENT,
+    `CustomerId` bigint NOT NULL,
     `AddressName` varchar(255) NULL,
     `Latitude` float(10,6) NOT NULL,
     `Longitude` float(10,6) NOT NULL,
-    PRIMARY KEY (`CustomerId`, `AddressId`),
+    `DateStart` datetime NULL,
+    `DateEnd` datetime NULL,
+    PRIMARY KEY (`AddressId`),
     CONSTRAINT `FK_CUSTOMER_ADDRESS_CUSTOMER` FOREIGN KEY (`CustomerId`) REFERENCES `Customer` (`CustomerId`) ON DELETE RESTRICT
 );
 
 CREATE TABLE `CustomerDiscount` (
-    `CustomerId` int(11) NOT NULL,
-    `DiscountId` int(11) NOT NULL,
+    `DiscountId` bigint NOT NULL AUTO_INCREMENT,
+    `CustomerId` bigint NOT NULL,
     `Name` varchar(255) NOT NULL,
     `Description` text NULL,
-    PRIMARY KEY (`DiscountId`, `CustomerId`),
-    CONSTRAINT `AK_CustomerDiscount_DiscountId` UNIQUE (`DiscountId`),
+    `DateStart` datetime NULL,
+    `DateEnd` datetime NULL,
+    PRIMARY KEY (`DiscountId`),
     CONSTRAINT `FK_DISCOUNT_CUSTOMER` FOREIGN KEY (`CustomerId`) REFERENCES `Customer` (`CustomerId`) ON DELETE RESTRICT
 );
 
 CREATE TABLE `DiscountTime` (
-    `DiscountId` int(11) NOT NULL,
-    `TimeId` int(11) NOT NULL,
+    `TimeId` bigint NOT NULL AUTO_INCREMENT,
+    `DiscountId` bigint NOT NULL,
     `DayWeek` int(11) NOT NULL,
     `StartTime` decimal(5,2) NULL,
     `EndTime` decimal(5,2) NULL,
-    PRIMARY KEY (`TimeId`, `DiscountId`),
+    PRIMARY KEY (`TimeId`),
     CONSTRAINT `FK_DISCOUNT_TIMES_DISCOUNT` FOREIGN KEY (`DiscountId`) REFERENCES `CustomerDiscount` (`DiscountId`) ON DELETE RESTRICT
 );
 
 CREATE INDEX `IDX_CUSTOMER_NAME` ON `Customer` (`CustomerName`);
 
-CREATE UNIQUE INDEX `AddressId_UNIQUE` ON `CustomerAddress` (`AddressId`);
+CREATE INDEX `IX_Customer_DateEnd` ON `Customer` (`DateEnd`);
 
-CREATE INDEX `FK_DISCOUNT_CUSTOMER_idx` ON `CustomerDiscount` (`CustomerId`);
+CREATE INDEX `IX_CustomerAddress_DateEnd` ON `CustomerAddress` (`DateEnd`);
 
-CREATE UNIQUE INDEX `DiscountId_UNIQUE` ON `CustomerDiscount` (`DiscountId`);
+CREATE UNIQUE INDEX `Customer_AddressId_UNIQUE` ON `CustomerAddress` (`CustomerId`, `AddressId`);
 
-CREATE INDEX `FK_DISCOUNT_TIMES_DISCOUNT` ON `DiscountTime` (`DiscountId`);
-
-CREATE UNIQUE INDEX `TimeId_UNIQUE` ON `DiscountTime` (`TimeId`);
-
-INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
-VALUES ('20210321063139_InitialCreate', '3.1.9');
+CREATE INDEX `IX_CustomerDiscount_CustomerId` ON `CustomerDiscount` (`CustomerId`);
 
