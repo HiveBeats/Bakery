@@ -39,7 +39,7 @@ namespace Bakery.Services.Application.Requests.GetNearestCustomers
             
             //todo: переместить в сервис  и разобраться с маппингами
             var customers = await _db.CustomerAddress.Include(x => x.Customer)
-                .Where(l => dictionary.ContainsKey(l.CustomerId))
+                .Where(l => dictionary.Keys.Contains(l.CustomerId))
                 .AsNoTracking()
                 .Select(x => new
                 {

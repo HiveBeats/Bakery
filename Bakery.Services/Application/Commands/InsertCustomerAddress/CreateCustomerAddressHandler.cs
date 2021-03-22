@@ -41,11 +41,13 @@ namespace Bakery.Services.Application.Commands.InsertCustomerAddress
                 await _db.CustomerAddress.AddAsync(address, cancellationToken);
 
                 await _db.SaveChangesAsync(cancellationToken);
-                
+
+                await transaction.CommitAsync(cancellationToken);
                 return Result<CustomerAddressDto>.Create(_mapper.Map<CustomerAddressDto>(address));
             }
             catch(Exception ex)
             {
+                await transaction.RollbackAsync(cancellationToken);
                 return Result<CustomerAddressDto>.Fail(ex.Message);
             }
         }
