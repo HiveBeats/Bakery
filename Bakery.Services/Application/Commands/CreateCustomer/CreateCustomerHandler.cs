@@ -23,7 +23,7 @@ namespace Bakery.Services.Application.Commands.CreateCustomer
             var result = await _customerService.CreateCustomer(request.Request);
                 
             if (!result.IsSuccessful)
-                transaction.RollbackAsync(cancellationToken);
+                await transaction.RollbackAsync(cancellationToken);
 
             await transaction.CommitAsync(cancellationToken);
                 

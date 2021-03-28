@@ -1,10 +1,10 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace Bakery.Migrations
 {
-    public partial class InitNew : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace Bakery.Migrations
                 columns: table => new
                 {
                     CustomerId = table.Column<long>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     CustomerName = table.Column<string>(maxLength: 255, nullable: false),
                     CustomerDescription = table.Column<string>(nullable: true),
                     DateStart = table.Column<DateTime>(nullable: true),
@@ -29,7 +29,7 @@ namespace Bakery.Migrations
                 columns: table => new
                 {
                     AddressId = table.Column<long>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     CustomerId = table.Column<long>(nullable: false),
                     AddressName = table.Column<string>(maxLength: 255, nullable: true),
                     Latitude = table.Column<float>(type: "float(10,6)", nullable: false),
@@ -53,7 +53,7 @@ namespace Bakery.Migrations
                 columns: table => new
                 {
                     DiscountId = table.Column<long>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     CustomerId = table.Column<long>(nullable: false),
                     Name = table.Column<string>(maxLength: 255, nullable: false),
                     Description = table.Column<string>(nullable: true),
@@ -76,7 +76,7 @@ namespace Bakery.Migrations
                 columns: table => new
                 {
                     TimeId = table.Column<long>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DiscountId = table.Column<long>(nullable: false),
                     DayWeek = table.Column<int>(type: "int(11)", nullable: false),
                     StartTime = table.Column<decimal>(type: "decimal(5,2)", nullable: true),

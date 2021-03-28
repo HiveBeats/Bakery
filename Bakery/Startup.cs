@@ -19,6 +19,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Pomelo.EntityFrameworkCore.MySql.Storage;
 
 namespace Bakery
 {
@@ -35,10 +37,25 @@ namespace Bakery
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            
             var connectionString = Configuration.GetConnectionString("BakeryDb");
-            services.AddDbContext<AppDbContext>(options => options
-                .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()))
-                .UseMySQL(connectionString, b => b.MigrationsAssembly("Bakery")));
+            ServerVersion version = ServerVersion.AutoDetect(connectionString);
+            services.AddDbContextPool<AppDbContext>(    
+                    dbContextOptions => dbContextOptions
+                        .UseMySql(
+                            connectionString,
+                            mySqlOptions => mySqlOptions
+                                .ServerVersion(version)
+                                .CharSetBehavior(CharSetBehavior.NeverAppend)
+                                .MigrationsAssembly("Bakery"))
+                        .UseLoggerFactory(
+                            LoggerFactory.Create(
+                                logging => logging
+                                    .AddConsole()
+                                    .AddFilter(level => level >= LogLevel.Information)))
+                        .EnableSensitiveDataLogging()
+                        .EnableDetailedErrors()
+                );
 
             services.AddTransient<IAddressRepository, AddressRepository>(provider =>
                 new AddressRepository(connectionString));

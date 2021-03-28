@@ -6,16 +6,16 @@ namespace Bakery.Core
 {
     public partial class AppDbContext : DbContext
     {
-        public AppDbContext()
+        protected AppDbContext()
         {
-           //Database.EnsureDeleted();
-            //Database.EnsureCreated();
+             //Database.EnsureDeleted();
+             //Database.EnsureCreated();
         }
 
         public AppDbContext(DbContextOptions options) : base(options)
         {
-            //Database.EnsureDeleted();
-            //Database.EnsureCreated();
+              //Database.EnsureDeleted();
+              //Database.EnsureCreated();
         }
         
         public virtual DbSet<Customer> Customer { get; set; }

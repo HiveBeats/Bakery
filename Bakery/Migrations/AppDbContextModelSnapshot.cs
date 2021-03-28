@@ -24,7 +24,7 @@ namespace Bakery.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("CustomerDescription")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
@@ -32,10 +32,10 @@ namespace Bakery.Migrations
                         .HasMaxLength(255);
 
                     b.Property<DateTime?>("DateEnd")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("DateStart")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("CustomerId");
 
@@ -61,10 +61,10 @@ namespace Bakery.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DateEnd")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("DateStart")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<float>("Latitude")
                         .HasColumnType("float(10,6)");
@@ -94,13 +94,13 @@ namespace Bakery.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DateEnd")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("DateStart")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
