@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
 using Bakery.Core;
+using Bakery.Middlewares;
 using Bakery.Services.Application;
 using Bakery.Services.Application.Models.Customer;
 using Bakery.Services.Domain.Address;
@@ -90,7 +91,9 @@ namespace Bakery
             app.UseRouting();
 
             app.UseAuthorization();
-
+            
+            app.UseMiddleware<LoggingMiddleware>();
+            
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
