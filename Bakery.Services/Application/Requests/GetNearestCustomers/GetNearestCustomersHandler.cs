@@ -33,35 +33,41 @@ namespace Bakery.Services.Application.Requests.GetNearestCustomers
         {
             var location = new Location(){Latitude = request.Request.Latitude, Longitude = request.Request.Longitude};
             var addresses = await _addressService.GetNearest(location, request.Request.Distance);
-            var dictionary = addresses.Value
+            var addressDictionary = addresses.Value
                 .GroupBy(x => x.CustomerId)
                 .ToDictionary(x => x.Key, g => g.ToList());
             
             //todo: переместить в сервис  и разобраться с маппингами
-            var customers = await _db.CustomerAddress.Include(x => x.Customer)
-                .Where(l => dictionary.Keys.Contains(l.CustomerId))
+            var customers = await _db.Customer
+                .Where(l => addressDictionary.Keys.Contains(l.CustomerId))
                 .AsNoTracking()
                 .Select(x => new
                 {
                     CustomerId = x.CustomerId, 
-                    CustomerName = x.Customer.CustomerName, 
-                    CustomerDescription = x.Customer.CustomerDescription, 
-                    DateStart = x.Customer.DateStart, 
-                    DateEnd = x.Customer.DateEnd, 
-                    AddressId = x.AddressId
+                    CustomerName = x.CustomerName, 
+                    CustomerDescription = x.CustomerDescription, 
+                    DateStart = x.DateStart, 
+                    DateEnd = x.DateEnd
                 })
                 .ToListAsync(cancellationToken);
 
-            var result = customers.Select(x => new AddressableCustomerDto()
-            {
-                CustomerId = x.CustomerId,
-                CustomerName = x.CustomerName,
-                CustomerDescription = null,
-                DateStart = null,
-                DateEnd = null,
-                Address = dictionary[x.CustomerId].FirstOrDefault(a => a.AddressId == x.AddressId)
-            });
+            var customersDictionary = customers.ToDictionary(x => x.CustomerId);
 
+            var result = new List<AddressableCustomerDto>();
+            foreach (var customerAddress in addressDictionary)
+            {
+                var customer = customersDictionary[customerAddress.Key];
+                result.AddRange(customerAddress.Value.Select(address => new AddressableCustomerDto()
+                {
+                    CustomerId = customer.CustomerId,
+                    CustomerName = customer.CustomerName,
+                    CustomerDescription = customer.CustomerDescription,
+                    DateStart = customer.DateStart,
+                    DateEnd = customer.DateEnd,
+                    Address = address
+                }));
+            }
+            
             return Result<IEnumerable<AddressableCustomerDto>>.Create(result);
         }
     }
