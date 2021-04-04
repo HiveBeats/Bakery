@@ -39,4 +39,4 @@ jobs:
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
-        script: cd Bakery && dotnet run ${{ secrets.CONFIG }}
+        script: cd ./root/bakery/Bakery && dotnet run ${{ secrets.CONFIG }}
