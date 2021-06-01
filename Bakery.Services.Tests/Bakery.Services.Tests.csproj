@@ -18,6 +18,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Bakery.Core\Bakery.Core.csproj" />
       <ProjectReference Include="..\Bakery.Services\Bakery.Services.csproj" />
+      <ProjectReference Include="..\Bakery\Bakery.csproj" />
     </ItemGroup>
 
 </Project>

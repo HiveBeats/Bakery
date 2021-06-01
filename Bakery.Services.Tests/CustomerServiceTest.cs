@@ -13,13 +13,12 @@ namespace Bakery.Services.Tests
 {
     public class TestTest : TestHere
     {
-        private IServiceProvider _serviceProvider;
-        public TestTest(IServiceProvider serviceProvider) : base(
+        public TestTest() : base(
             new DbContextOptionsBuilder<AppDbContext>()
                 .UseSqlite("Filename=Test.db")
                 .Options)
         {
-            _serviceProvider = serviceProvider;
+            
         }
         
         [Fact]
@@ -27,7 +26,7 @@ namespace Bakery.Services.Tests
         {
             using (var ctx = new AppDbContext(ContextOptions))
             {
-                var mapper = _serviceProvider.GetService<IMapper>();
+                var mapper = ServiceProvider.GetService<IMapper>();
                 var customerService = new CustomerService(ctx, mapper);
 
                 var customer = new CreateCustomer() {Name = "Hello", Desc = "wtf", AddressName = "ftw"};
@@ -43,7 +42,7 @@ namespace Bakery.Services.Tests
         {
             using (var ctx = new AppDbContext(ContextOptions))
             {
-                var mapper = _serviceProvider.GetService<IMapper>();
+                var mapper = ServiceProvider.GetService<IMapper>();
                 var customerService = new CustomerService(ctx, mapper);
                 
                 var customer = new CreateCustomer() {Name = "Hello", Desc = "wtf", AddressName = "ftw"};
