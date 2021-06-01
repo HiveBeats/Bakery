@@ -4,18 +4,20 @@ using AutoMapper;
 using Bakery.Core;
 using Bakery.Services.Application.Models;
 using Bakery.Services.Application.Models.Customer;
+
 namespace Bakery.Services.Domain.Customer
 {
     public class CustomerService : ICustomerService
     {
         private readonly AppDbContext _db;
         private readonly IMapper _mapper;
+
         public CustomerService(AppDbContext db, IMapper mapper)
         {
             _db = db;
             _mapper = mapper;
         }
-        
+
         public async Task<Result<CustomerDto>> CreateCustomer(CreateCustomer request)
         {
             var customer = new Core.Entities.Customer(request.Name, request.Desc);
@@ -23,8 +25,8 @@ namespace Bakery.Services.Domain.Customer
             {
                 _db.Customer.Add(customer);
                 await _db.SaveChangesAsync();
-                
-                return Result<CustomerDto>.Create(_mapper.Map<CustomerDto>(customer)); 
+
+                return Result<CustomerDto>.Create(_mapper.Map<CustomerDto>(customer));
             }
             catch (Exception ex)
             {
@@ -41,8 +43,8 @@ namespace Bakery.Services.Domain.Customer
                     return Result<CustomerDto>.Fail(Exceptions.NotFoundException);
 
                 customer.UpdateNameAndDesc(request.CustomerName, request.CustomerDesc);
-                
-                return Result<CustomerDto>.Create(_mapper.Map<CustomerDto>(customer)); 
+
+                return Result<CustomerDto>.Create(_mapper.Map<CustomerDto>(customer));
             }
             catch (Exception e)
             {
@@ -59,8 +61,8 @@ namespace Bakery.Services.Domain.Customer
                     return Result<CustomerDto>.Fail(Exceptions.NotFoundException);
 
                 customer.Close();
-                
-                return Result<CustomerDto>.Create(_mapper.Map<CustomerDto>(customer)); 
+
+                return Result<CustomerDto>.Create(_mapper.Map<CustomerDto>(customer));
             }
             catch (Exception e)
             {
@@ -76,7 +78,7 @@ namespace Bakery.Services.Domain.Customer
                 if (customer == null)
                     return Result<CustomerDto>.Fail(Exceptions.NotFoundException);
 
-                return Result<CustomerDto>.Create(_mapper.Map<CustomerDto>(customer)); 
+                return Result<CustomerDto>.Create(_mapper.Map<CustomerDto>(customer));
             }
             catch (Exception e)
             {
