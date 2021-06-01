@@ -1,6 +1,7 @@
 using System;
 using Bakery.Core;
 using System.Linq;
+using Bakery.Core.Entities;
 using Bakery.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -9,11 +10,11 @@ using Xunit;
 
 namespace Bakery.Services.Tests
 {
-    public class TestHere
+    public class BaseTest
     {
         protected DbContextOptions<AppDbContext> ContextOptions { get; }
         protected IServiceProvider ServiceProvider { get; private set; }
-        protected TestHere(DbContextOptions<AppDbContext> contextOptions)
+        protected BaseTest(DbContextOptions<AppDbContext> contextOptions)
         {
             ContextOptions = contextOptions;
             ConfigureServices();
@@ -33,6 +34,11 @@ namespace Bakery.Services.Tests
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
+
+                var customer = new Customer("Michael Adams", "Lorem ipsum dolor sit amet");
+
+                context.Customer.Add(customer);
+                context.SaveChanges();
             }
         }
     }
