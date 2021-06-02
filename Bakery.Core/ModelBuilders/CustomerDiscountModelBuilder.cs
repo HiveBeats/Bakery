@@ -22,7 +22,7 @@ namespace Bakery.Core.ModelBuilders
                 .ValueGeneratedOnAdd();
 
             entity.Property(e => e.CustomerId)
-                .HasConversion<string>();
+                .HasConversion<float>();
 
             entity.Property(e => e.Name)
                 .IsRequired()
