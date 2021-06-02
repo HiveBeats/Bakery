@@ -4,7 +4,7 @@ namespace Bakery.Services.Application.Models.CustomerAddress
 {
     public class AddressDto
     {
-        public long AddressId { get; set; }
+        public string AddressId { get; set; }
         public string AddressName { get; set; }
         public float Latitude { get; set; }
         public float Longitude { get; set; }

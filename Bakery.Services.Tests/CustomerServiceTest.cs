@@ -18,6 +18,7 @@ namespace Bakery.Services.Tests
         private readonly ITestOutputHelper _testOutputHelper;
         private AppDbContext _context;
         private CustomerService _customerService;
+        private string _insertedId;
 
         public CustomerServiceTest(ITestOutputHelper testOutputHelper) : base(
             new DbContextOptionsBuilder<AppDbContext>()
@@ -32,44 +33,49 @@ namespace Bakery.Services.Tests
         [Fact]
         public void TestCreate()
         {
-                var customer = new CreateCustomer() {Name = "Hello", Desc = "wtf", AddressName = "ftw"};
-                var result = _customerService.CreateCustomer(customer).Result;
-                
-                Assert.True(result.IsSuccessful);
-                Assert.NotNull(_context.Customer.FirstOrDefault(c => c.CustomerId == 2));
+            var customer = new CreateCustomer() {Name = "Hello", Desc = "wtf", AddressName = "ftw"};
+            var result = _customerService.CreateCustomer(customer).Result;
+            var resultId = result.Value.CustomerId;
+            
+            Assert.True(result.IsSuccessful);
+            Assert.NotNull(_context.Customer.FirstOrDefault(x => x.CustomerId == resultId));
         }
 
         [Fact]
         public void TestUpdate()
         {
-                var updateCustomer = new UpdateCustomer() {CustomerId = 1, CustomerName = "Bye", CustomerDesc = "hello"};
-                var result = _customerService.UpdateCustomer(updateCustomer).Result;
-        
-                var updatedCustomer = _context.Customer.FirstOrDefault(c => c.CustomerId == 1);
-                
+            var id = _context.Customer.FirstOrDefault()?.CustomerId;
+            var updateCustomer = new UpdateCustomer() {CustomerId = id, CustomerName = "Bye", CustomerDesc = "hello"};
+            var result = _customerService.UpdateCustomer(updateCustomer).Result;
+    
+            var updatedCustomer = _context.Customer.FirstOrDefault(c => c.CustomerId == id);
+            
+            if (!result.IsSuccessful)
                 _testOutputHelper.WriteLine(result.Exception);
-                
-                Assert.True(result.IsSuccessful);
-                Assert.NotNull(updatedCustomer);
-                Assert.Equal("Bye", updatedCustomer.CustomerName);
-                Assert.Equal("hello", updatedCustomer.CustomerDescription);
+            
+            Assert.True(result.IsSuccessful);
+            Assert.NotNull(updatedCustomer);
+            Assert.Equal("Bye", updatedCustomer.CustomerName);
+            Assert.Equal("hello", updatedCustomer.CustomerDescription);
         }
 
         [Fact]
         public void TestGet()
         {
-            var customerDetail = new GetCustomerDetail() {CustomerId = 1};
+            var id = _context.Customer.FirstOrDefault()?.CustomerId;
+            var customerDetail = new GetCustomerDetail() {CustomerId = id};
             var result = _customerService.GetCustomer(customerDetail).Result;
             
             Assert.True(result.IsSuccessful);
             Assert.NotNull(result.Value);
-            Assert.Equal(1, result.Value.CustomerId);
+            Assert.Equal(id, result.Value.CustomerId);
         }
         
         [Fact]
         public void TestClose()
         {
-            var closeCustomer = new CloseCustomer() {CustomerId = 1};
+            var id = _context.Customer.FirstOrDefault()?.CustomerId;
+            var closeCustomer = new CloseCustomer() {CustomerId = id};
             var result = _customerService.CloseCustomer(closeCustomer).Result;
             
             Assert.True(result.IsSuccessful);

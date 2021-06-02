@@ -11,8 +11,7 @@ namespace Bakery.Core.ModelBuilders
             entity.HasIndex(e => e.CustomerName)
                 .HasName("IDX_CUSTOMER_NAME");
 
-            entity.Property(e => e.CustomerId)
-                .HasConversion<float>();
+            entity.Property(e => e.CustomerId);
 
             entity.Property(e => e.CustomerName)
                 .IsRequired()
