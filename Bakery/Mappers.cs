@@ -13,6 +13,7 @@ namespace Bakery
             CreateMap<CustomerDto, CustomerDetailDto>();
             CreateMap<CustomerAddress, CustomerAddressDto>().ReverseMap();
             CreateMap<Customer, AddressableCustomerDto>();
+            CreateMap<CustomerAddress, AddressDto>();
             
             CreateMap<GetNearestCustomers, Location>();
         }
