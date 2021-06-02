@@ -61,7 +61,7 @@ namespace Bakery
                 );
 
             services.AddTransient<IAddressRepository, AddressRepository>(provider =>
-                new AddressRepository(connectionString));
+                new AddressRepository(connectionString, new ProductionDbConnectionResolver()));
             
             services.AddAutoMapper(typeof(Mappers));
             
