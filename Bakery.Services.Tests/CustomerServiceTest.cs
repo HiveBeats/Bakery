@@ -17,7 +17,7 @@ namespace Bakery.Services.Tests
     {
         private readonly ITestOutputHelper _testOutputHelper;
         private AppDbContext _context;
-        private CustomerService _customerService;
+        private ICustomerService _customerService;
 
         public CustomerServiceTest(ITestOutputHelper testOutputHelper) : base(
             new DbContextOptionsBuilder<AppDbContext>()
@@ -26,7 +26,9 @@ namespace Bakery.Services.Tests
         {
             _testOutputHelper = testOutputHelper;
             _context = new AppDbContext(ContextOptions);
-            _customerService = new CustomerService(_context, ServiceProvider.GetService<IMapper>());
+
+            var mapper = ServiceProvider.GetService<IMapper>();
+            _customerService = new CustomerService(_context, mapper);
         }
 
         [Fact]

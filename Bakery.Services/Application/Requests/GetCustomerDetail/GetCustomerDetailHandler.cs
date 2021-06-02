@@ -20,8 +20,7 @@ namespace Bakery.Services.Application.Requests.GetCustomerDetail
             _db = db;
             _mapper = mapper;
         }
-
-
+        
         public async Task<Result<CustomerDetailDto>> Handle(GetCustomerDetailRequest request, CancellationToken cancellationToken)
         {
             var customerResult = await _customerService.GetCustomer(request.Request);
