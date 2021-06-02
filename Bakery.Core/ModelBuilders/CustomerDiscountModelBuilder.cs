@@ -18,9 +18,11 @@ namespace Bakery.Core.ModelBuilders
                 .HasName("PRIMARY");
 
             entity.Property(e => e.DiscountId)
+                .HasConversion<float>()
                 .ValueGeneratedOnAdd();
 
-            entity.Property(e => e.CustomerId);
+            entity.Property(e => e.CustomerId)
+                .HasConversion<string>();
 
             entity.Property(e => e.Name)
                 .IsRequired()
