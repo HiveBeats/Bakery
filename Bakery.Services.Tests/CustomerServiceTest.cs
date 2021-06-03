@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using AutoMapper;
 using Bakery.Core;
@@ -6,8 +5,6 @@ using Bakery.Services.Application.Models.Customer;
 using Bakery.Services.Domain.Customer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MySqlX.XDevAPI.Common;
-using Org.BouncyCastle.Asn1.X509;
 using Xunit;
 using Xunit.Abstractions;
 

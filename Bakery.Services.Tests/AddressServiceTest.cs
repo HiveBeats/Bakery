@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using AutoMapper;
 using Bakery.Core;
@@ -39,14 +38,10 @@ namespace Bakery.Services.Tests
             var testAddress = new CreateCustomerAddress() {Latitude = 12, Longitude = 12, AddressName = "Home"};
 
             var result = _addressService.Create(customer, testAddress).Result;
-            
-            if (!result.IsSuccessful)
-                _testOutputHelper.WriteLine(result.Exception);
-            
+
+            Assert.True(result.IsSuccessful);
             Assert.NotNull(result.Value);
             var customerAddress = _context.CustomerAddress.FirstOrDefault(c => c.AddressId == result.Value.AddressId);
-            
-            Assert.True(result.IsSuccessful);
             Assert.NotNull(customerAddress);
             Assert.Equal("Home", customerAddress.AddressName);
         }
