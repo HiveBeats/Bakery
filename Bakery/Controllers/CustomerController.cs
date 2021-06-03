@@ -25,13 +25,13 @@ namespace Bakery.Controllers
         }
 
         [HttpGet]
-        [Route("Get/{id:long}")]
-        public async Task<IActionResult> Get(long id)
+        [Route("Get/{id:Guid}")]
+        public async Task<IActionResult> Get(Guid id)
         {
             if (id == null)
                 return BadRequest("Incorrect input");
             
-            var request = new GetCustomerDetail() { CustomerId = id };
+            var request = new GetCustomerDetail() { CustomerId = id.ToString() };
             var result =  await _mediator.Send(new GetCustomerDetailRequest
             {
                 Request = request
@@ -98,10 +98,10 @@ namespace Bakery.Controllers
         }
 
         [HttpPost]
-        [Route("Close/{id:long}")]
-        public async Task<IActionResult> CloseCustomer(long id)
+        [Route("Close/{id:Guid}")]
+        public async Task<IActionResult> CloseCustomer(Guid id)
         {
-            var request = new CloseCustomer() { CustomerId = id };
+            var request = new CloseCustomer() { CustomerId = id.ToString() };
             var result =  await _mediator.Send(new CloseCustomerCommand
             {
                 Request = request

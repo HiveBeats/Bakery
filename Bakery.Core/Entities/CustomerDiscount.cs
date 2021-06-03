@@ -7,11 +7,12 @@ namespace Bakery.Core.Entities
     {
         public CustomerDiscount()
         {
+            DiscountId = Guid.NewGuid().ToString();
             DiscountTime = new HashSet<DiscountTime>();
         }
 
-        public long CustomerId { get; set; }
-        public long DiscountId { get; set; }
+        public string CustomerId { get; set; }
+        public string DiscountId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime? DateStart { get; set; }

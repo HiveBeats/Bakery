@@ -7,6 +7,7 @@ namespace Bakery.Core.Entities
     {
         public Customer(string name, string desc, CustomerAddress address = null)
         {
+            CustomerId = Guid.NewGuid().ToString();
             CustomerAddress = new HashSet<CustomerAddress>();
             CustomerDiscount = new HashSet<CustomerDiscount>();
             
@@ -23,7 +24,7 @@ namespace Bakery.Core.Entities
             CustomerDiscount = new HashSet<CustomerDiscount>();
         }
 
-        public long CustomerId { get; set; }
+        public string CustomerId { get; set; }
         public string CustomerName { get; set; }
         public string CustomerDescription { get; set; }
         public DateTime? DateStart { get; set; }

@@ -14,11 +14,9 @@ namespace Bakery.Core.ModelBuilders
             entity.HasKey(e => e.AddressId)
                 .HasName("PRIMARY");
 
-            entity.Property(e => e.CustomerId)
-                .HasConversion<float>();
+            entity.Property(e => e.CustomerId);
 
             entity.Property(e => e.AddressId)
-                .HasConversion<float>()
                 .ValueGeneratedOnAdd();
 
             entity.Property(e => e.AddressName).HasMaxLength(255);

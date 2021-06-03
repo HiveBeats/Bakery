@@ -7,6 +7,8 @@ namespace Bakery.Core.Entities
     {
         public CustomerAddress(Customer customer, float latitude, float longitude, string name)
         {
+            AddressId = Guid.NewGuid().ToString();
+            
             Customer = customer;
             Latitude = latitude;
             Longitude = longitude;
@@ -18,8 +20,8 @@ namespace Bakery.Core.Entities
         {
             
         }
-        public long CustomerId { get; set; }
-        public long AddressId { get; set; }
+        public string CustomerId { get; set; }
+        public string AddressId { get; set; }
         public string AddressName { get; set; }
         public float Latitude { get; set; }
         public float Longitude { get; set; }

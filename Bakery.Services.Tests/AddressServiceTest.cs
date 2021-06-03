@@ -1,6 +1,8 @@
+using System;
 using System.Linq;
 using AutoMapper;
 using Bakery.Core;
+using Bakery.Services.Application;
 using Bakery.Services.Application.Models.CustomerAddress;
 using Bakery.Services.Domain.Address;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +27,7 @@ namespace Bakery.Services.Tests
             _testOutputHelper = testOutputHelper;
             _context = new AppDbContext(ContextOptions);
 
-            var addressRepo = new AddressRepository(string.Empty);
+            var addressRepo = new AddressRepository("Filename=Test.db", new TestDbConnectionResolver());
             var mapper = ServiceProvider.GetService<IMapper>();
             _addressService = new AddressService(_context, addressRepo, mapper);
         }
@@ -33,11 +35,16 @@ namespace Bakery.Services.Tests
         [Fact]
         public void TestCreate()
         {
-            var customer = _context.Customer.FirstOrDefault(m => m.CustomerId == 1);
-            var testAddress = new CreateCustomerAddress() {CustomerId = 1, Latitude = 12, Longitude = 12, AddressName = "Home"};
+            var customer = _context.Customer.FirstOrDefault();
+            var testAddress = new CreateCustomerAddress() {Latitude = 12, Longitude = 12, AddressName = "Home"};
 
             var result = _addressService.Create(customer, testAddress).Result;
-            var customerAddress = _context.CustomerAddress.FirstOrDefault(c => c.AddressId == 1);
+            
+            if (!result.IsSuccessful)
+                _testOutputHelper.WriteLine(result.Exception);
+            
+            Assert.NotNull(result.Value);
+            var customerAddress = _context.CustomerAddress.FirstOrDefault(c => c.AddressId == result.Value.AddressId);
             
             Assert.True(result.IsSuccessful);
             Assert.NotNull(customerAddress);

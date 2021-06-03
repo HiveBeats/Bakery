@@ -18,11 +18,9 @@ namespace Bakery.Core.ModelBuilders
                 .HasName("PRIMARY");
 
             entity.Property(e => e.TimeId)
-                .HasConversion<float>()
                 .ValueGeneratedOnAdd();
 
-            entity.Property(e => e.DiscountId)
-                .HasConversion<float>();
+            entity.Property(e => e.DiscountId);
 
             entity.Property(e => e.DayWeek).HasColumnType("int(11)");
 

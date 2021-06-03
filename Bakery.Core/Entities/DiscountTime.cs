@@ -5,8 +5,12 @@ namespace Bakery.Core.Entities
 {
     public class DiscountTime
     {
-        public long DiscountId { get; set; }
-        public long TimeId { get; set; }
+        public DiscountTime()
+        {
+            TimeId = Guid.NewGuid().ToString();
+        }
+        public string DiscountId { get; set; }
+        public string TimeId { get; set; }
         public int DayWeek { get; set; }
         public decimal? StartTime { get; set; }
         public decimal? EndTime { get; set; }

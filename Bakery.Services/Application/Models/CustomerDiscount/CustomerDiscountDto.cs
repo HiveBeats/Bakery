@@ -5,7 +5,7 @@ namespace Bakery.Services.Application.Models.CustomerDiscount
 {
     public class CustomerDiscountDto
     {
-        public long DiscountId { get; set; }
+        public string DiscountId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime? DateStart { get; set; }

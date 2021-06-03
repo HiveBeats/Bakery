@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using Bakery.Services.Application;
 using Bakery.Services.Application.Models.CustomerAddress;
 using Dapper;
 using MySql.Data.MySqlClient;
@@ -11,16 +12,19 @@ namespace Bakery.Services.Domain.Address
     public class AddressRepository : IAddressRepository
     {
         private readonly string _connectionString;
-        public AddressRepository(string connection)
+        private readonly IDbConnectionResolver _connector;
+
+        public AddressRepository(string connection, IDbConnectionResolver connector)
         {
             _connectionString = connection;
+            _connector = connector;
         }
 
         public async Task<IEnumerable<NearestAddressDto>> GetNearest(NearestLocation request)
         {
             request.Today = DateTime.UtcNow;
             
-            using (IDbConnection db = new MySqlConnection(_connectionString))
+            using (IDbConnection db = _connector.ResolveConnection(_connectionString))
             {
                 var query = @"SELECT ca.CustomerId,
                                      ca.AddressId,
